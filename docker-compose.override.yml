@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  luna-nail-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
