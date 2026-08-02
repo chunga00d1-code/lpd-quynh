@@ -321,7 +321,7 @@ export default function Home() {
       }
     };
 
-    const links = document.querySelectorAll('a[href^="#"]');
+    const links = document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
     links.forEach((link) => link.addEventListener("click", handleAnchorClick));
 
     return () => {
