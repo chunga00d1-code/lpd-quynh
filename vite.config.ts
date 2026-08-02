@@ -1,9 +1,23 @@
 import vinext from "vinext";
 import { defineConfig, type UserConfig } from "vite";
-import hostingConfig from "./.openai/hosting.json";
 import { sites } from "./build/sites-vite-plugin";
 import fs from "fs";
 import path from "path";
+
+interface HostingConfig {
+  d1: string;
+  r2: string;
+}
+
+// .openai/hosting.json is local-only (gitignored) Sites config; fall back to
+// empty bindings when it's absent, e.g. in CI.
+function readHostingConfig(): HostingConfig {
+  const hostingPath = path.resolve(process.cwd(), ".openai/hosting.json");
+  if (fs.existsSync(hostingPath)) {
+    return JSON.parse(fs.readFileSync(hostingPath, "utf-8")) as HostingConfig;
+  }
+  return { d1: "", r2: "" };
+}
 
 // Read PORT from .env
 let port = 5002;
@@ -33,7 +47,7 @@ const punycodePlugin = {
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   "00000000-0000-4000-8000-000000000000";
 
-const { d1, r2 } = hostingConfig;
+const { d1, r2 } = readHostingConfig();
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
