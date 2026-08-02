@@ -2,10 +2,11 @@ import { env } from "cloudflare:workers";
 
 export async function POST(request: Request) {
   try {
-    const cloudName = (env as any).CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = (env as any).CLOUDINARY_API_KEY || process.env.CLOUDINARY_API_KEY;
-    const apiSecret = (env as any).CLOUDINARY_API_SECRET || process.env.CLOUDINARY_API_SECRET;
-    const uploadPreset = (env as any).CLOUDINARY_UPLOAD_PRESET || process.env.CLOUDINARY_UPLOAD_PRESET;
+    const cloudflareEnv = env as Record<string, string | undefined>;
+    const cloudName = cloudflareEnv.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = cloudflareEnv.CLOUDINARY_API_KEY || process.env.CLOUDINARY_API_KEY;
+    const apiSecret = cloudflareEnv.CLOUDINARY_API_SECRET || process.env.CLOUDINARY_API_SECRET;
+    const uploadPreset = cloudflareEnv.CLOUDINARY_UPLOAD_PRESET || process.env.CLOUDINARY_UPLOAD_PRESET;
 
     if (!cloudName) {
       return Response.json(
@@ -50,7 +51,11 @@ export async function POST(request: Request) {
       body: cloudinaryForm,
     });
 
-    const result: any = await response.json();
+    const result = (await response.json()) as {
+      error?: { message?: string };
+      secure_url?: string;
+      public_id?: string;
+    };
     if (!response.ok) {
       return Response.json(
         { error: result.error?.message || "Cloudinary upload failed" },
@@ -59,7 +64,8 @@ export async function POST(request: Request) {
     }
 
     return Response.json({ url: result.secure_url, publicId: result.public_id });
-  } catch (error: any) {
-    return Response.json({ error: error.message || "Upload failed" }, { status: 500 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Upload failed";
+    return Response.json({ error: message }, { status: 500 });
   }
 }

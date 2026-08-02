@@ -34,19 +34,62 @@ const SplitWords = ({ text, startDelay = 0 }: { text: string; startDelay?: numbe
   </>
 );
 
-const DEFAULT_SERVICES = [
+interface Service {
+  _id: string;
+  icon?: string;
+  name: string;
+  text?: string;
+  price: string;
+  imageUrl?: string;
+  order?: number;
+}
+
+interface Look {
+  _id: string;
+  className: string;
+  title: string;
+  tag: string;
+  imageUrl?: string;
+}
+
+interface Booking {
+  _id: string;
+  name: string;
+  phone: string;
+  service: string;
+  date: string;
+  time: string;
+  notes?: string;
+  status: string;
+}
+
+interface Settings {
+  salonName: string;
+  phone: string;
+  email: string;
+  address: string;
+  openHours: string;
+  instagramUrl: string;
+  facebookUrl: string;
+  tiktokUrl: string;
+  heroTitle: string;
+  heroText: string;
+  aboutText: string;
+}
+
+const DEFAULT_SERVICES: Service[] = [
   { _id: "1", icon: "✦", name: "Sơn gel cao cấp", text: "Bảng màu thời thượng, bền đẹp và sáng bóng.", price: "Từ 180.000đ", imageUrl: "" },
   { _id: "2", icon: "◇", name: "Nail art thiết kế", text: "Mỗi bộ móng là một thiết kế dành riêng cho bạn.", price: "Từ 250.000đ", imageUrl: "" },
   { _id: "3", icon: "○", name: "Chăm sóc móng", text: "Làm sạch, dưỡng móng và thư giãn nhẹ nhàng.", price: "Từ 150.000đ", imageUrl: "" },
 ];
 
-const DEFAULT_LOOKS = [
+const DEFAULT_LOOKS: Look[] = [
   { _id: "1", className: "look-burgundy", title: "Burgundy Pearl", tag: "Sang trọng", imageUrl: "" },
   { _id: "2", className: "look-milk", title: "Milky Chrome", tag: "Tinh tế", imageUrl: "" },
   { _id: "3", className: "look-french", title: "Modern French", tag: "Tối giản", imageUrl: "" },
 ];
 
-const DEFAULT_SETTINGS = {
+const DEFAULT_SETTINGS: Settings = {
   salonName: "Quỳnh Nail ART",
   phone: "0901 234 567",
   email: "hello@quynhnail.vn",
@@ -62,10 +105,10 @@ const DEFAULT_SETTINGS = {
 
 export default function Home() {
   // DB loaded states
-  const [services, setServices] = useState<any[]>(DEFAULT_SERVICES);
-  const [looks, setLooks] = useState<any[]>(DEFAULT_LOOKS);
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [settings, setSettings] = useState<any>(DEFAULT_SETTINGS);
+  const [services, setServices] = useState<Service[]>(DEFAULT_SERVICES);
+  const [looks, setLooks] = useState<Look[]>(DEFAULT_LOOKS);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   // Booking form states
   const [bookingName, setBookingName] = useState("");
@@ -101,15 +144,8 @@ export default function Home() {
   // Add/Edit forms
   const [serviceForm, setServiceForm] = useState({ id: "", name: "", text: "", price: "", icon: "✦", imageUrl: "", order: 0 });
   const [lookForm, setLookForm] = useState({ title: "", tag: "", className: "look-burgundy", imageUrl: "" });
-  const [settingsForm, setSettingsForm] = useState<any>(DEFAULT_SETTINGS);
+  const [settingsForm, setSettingsForm] = useState<Settings>(DEFAULT_SETTINGS);
   const [uploadingImage, setUploadingImage] = useState(false);
-
-  // Fetch initial data
-  useEffect(() => {
-    fetchServices();
-    fetchLooks();
-    fetchSettings();
-  }, []);
 
   // Intersection Observer scroll reveal hook
   useEffect(() => {
@@ -167,6 +203,8 @@ export default function Home() {
       img.src = look.imageUrl;
       img.onload = () => setLoadedLookImages((prev) => ({ ...prev, [id]: true }));
     });
+    // loadedLookImages intentionally excluded: it's checked, not reacted to, to avoid re-preloading on every load
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [looks]);
 
   // Parallax nhẹ cho ảnh hero và các thẻ gallery khi cuộn trang
@@ -328,6 +366,14 @@ export default function Home() {
     }
   };
 
+  // Fetch initial data
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- async data fetch, setState happens after await
+    fetchServices();
+    fetchLooks();
+    fetchSettings();
+  }, []);
+
   const fetchBookings = async (token: string) => {
     try {
       const res = await fetch("/api/bookings", {
@@ -376,7 +422,7 @@ export default function Home() {
       } else {
         setBookingError(data.error || "Có lỗi xảy ra khi gửi yêu cầu.");
       }
-    } catch (err) {
+    } catch {
       setBookingError("Không thể kết nối đến máy chủ.");
     } finally {
       setBookingSubmitting(false);
@@ -404,7 +450,7 @@ export default function Home() {
       } else {
         setLoginError(data.error || "Tên tài khoản hoặc mật khẩu không chính xác.");
       }
-    } catch (err) {
+    } catch {
       setLoginError("Không thể kết nối đến hệ thống xác thực.");
     }
   };
@@ -412,19 +458,18 @@ export default function Home() {
   // Auto-login from localStorage if token exists
   useEffect(() => {
     const savedToken = localStorage.getItem("quynh_admin_token");
-    if (savedToken) {
-      setSessionToken(savedToken);
-      // Verify token via fetching bookings
-      fetch("/api/bookings", { headers: { Authorization: `Bearer ${savedToken}` } })
-        .then(res => {
-          if (res.ok) {
-            setIsAdminLoggedIn(true);
-            fetchBookings(savedToken);
-          } else {
-            localStorage.removeItem("quynh_admin_token");
-          }
-        });
-    }
+    if (!savedToken) return;
+    // Verify token via fetching bookings
+    fetch("/api/bookings", { headers: { Authorization: `Bearer ${savedToken}` } })
+      .then(res => {
+        if (res.ok) {
+          setSessionToken(savedToken);
+          setIsAdminLoggedIn(true);
+          fetchBookings(savedToken);
+        } else {
+          localStorage.removeItem("quynh_admin_token");
+        }
+      });
   }, []);
 
   const handleAdminLogout = () => {
@@ -478,7 +523,7 @@ export default function Home() {
       } else {
         alert("Upload thất bại: " + (data.error || "Unknown error"));
       }
-    } catch (err) {
+    } catch {
       alert("Lỗi upload ảnh.");
     } finally {
       setUploadingImage(false);
@@ -514,7 +559,7 @@ export default function Home() {
     }
   };
 
-  const handleEditService = (srv: any) => {
+  const handleEditService = (srv: Service) => {
     setServiceForm({
       id: srv._id,
       name: srv.name,
@@ -954,7 +999,7 @@ export default function Home() {
                         </tr>
                       </thead>
                       <tbody>
-                        {bookings.map((booking: any) => (
+                        {bookings.map((booking: Booking) => (
                           <tr key={booking._id}>
                             <td>
                               <strong>{booking.name}</strong>
@@ -1085,7 +1130,7 @@ export default function Home() {
                         </tr>
                       </thead>
                       <tbody>
-                        {services.map((srv: any) => (
+                        {services.map((srv: Service) => (
                           <tr key={srv._id}>
                             <td>
                               {srv.imageUrl ? (
@@ -1178,7 +1223,7 @@ export default function Home() {
                         </tr>
                       </thead>
                       <tbody>
-                        {looks.map((look: any) => (
+                        {looks.map((look: Look) => (
                           <tr key={look._id}>
                             <td>
                               {look.imageUrl ? (
@@ -1210,7 +1255,7 @@ export default function Home() {
                           <input 
                             type="text" 
                             value={settingsForm.salonName} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, salonName: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, salonName: e.target.value }))}
                             required 
                           />
                         </div>
@@ -1219,7 +1264,7 @@ export default function Home() {
                           <input 
                             type="text" 
                             value={settingsForm.phone} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, phone: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, phone: e.target.value }))}
                             required 
                           />
                         </div>
@@ -1231,7 +1276,7 @@ export default function Home() {
                           <input 
                             type="email" 
                             value={settingsForm.email} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, email: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, email: e.target.value }))}
                             required 
                           />
                         </div>
@@ -1240,7 +1285,7 @@ export default function Home() {
                           <input 
                             type="text" 
                             value={settingsForm.address} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, address: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, address: e.target.value }))}
                             required 
                           />
                         </div>
@@ -1251,7 +1296,7 @@ export default function Home() {
                         <input 
                           type="text" 
                           value={settingsForm.openHours} 
-                          onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, openHours: e.target.value }))}
+                          onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, openHours: e.target.value }))}
                           required 
                         />
                       </div>
@@ -1262,7 +1307,7 @@ export default function Home() {
                           <input 
                             type="text" 
                             value={settingsForm.heroTitle} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, heroTitle: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, heroTitle: e.target.value }))}
                             required 
                           />
                         </div>
@@ -1271,7 +1316,7 @@ export default function Home() {
                           <textarea 
                             rows={2}
                             value={settingsForm.heroText} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, heroText: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, heroText: e.target.value }))}
                             required 
                           />
                         </div>
@@ -1282,7 +1327,7 @@ export default function Home() {
                         <textarea 
                           rows={3}
                           value={settingsForm.aboutText} 
-                          onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, aboutText: e.target.value }))}
+                          onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, aboutText: e.target.value }))}
                           required 
                         />
                       </div>
@@ -1293,7 +1338,7 @@ export default function Home() {
                           <input 
                             type="text" 
                             value={settingsForm.instagramUrl} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, instagramUrl: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, instagramUrl: e.target.value }))}
                           />
                         </div>
                         <div className="admin-input-group">
@@ -1301,7 +1346,7 @@ export default function Home() {
                           <input 
                             type="text" 
                             value={settingsForm.facebookUrl} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, facebookUrl: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, facebookUrl: e.target.value }))}
                           />
                         </div>
                         <div className="admin-input-group">
@@ -1309,7 +1354,7 @@ export default function Home() {
                           <input 
                             type="text" 
                             value={settingsForm.tiktokUrl} 
-                            onChange={(e) => setSettingsForm((prev: any) => ({ ...prev, tiktokUrl: e.target.value }))}
+                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, tiktokUrl: e.target.value }))}
                           />
                         </div>
                       </div>

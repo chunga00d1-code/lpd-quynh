@@ -10,8 +10,9 @@ export class BookingController {
       }
       const bookings = await BookingService.getAllBookings();
       return Response.json({ bookings });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to fetch bookings" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to fetch bookings";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -35,8 +36,9 @@ export class BookingController {
       });
       
       return Response.json({ success: true, bookingId: booking._id }, { status: 201 });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to create booking" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to create booking";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -60,8 +62,9 @@ export class BookingController {
       }
       
       return Response.json({ success: true });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to update booking" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to update booking";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 }

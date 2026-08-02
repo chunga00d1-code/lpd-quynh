@@ -6,8 +6,9 @@ export class LookController {
     try {
       const looks = await LookService.getAllLooks();
       return Response.json({ looks });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to fetch looks" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to fetch looks";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -33,8 +34,9 @@ export class LookController {
       });
       
       return Response.json({ success: true, lookId: look._id }, { status: 201 });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to create look" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to create look";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -58,8 +60,9 @@ export class LookController {
       }
       
       return Response.json({ success: true });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to delete look" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to delete look";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 }

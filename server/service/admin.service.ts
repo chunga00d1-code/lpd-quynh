@@ -15,8 +15,9 @@ export class AdminService {
     try {
       await connectToDatabase();
       
-      const envUsername = (env as any).ADMIN_USERNAME || process.env.ADMIN_USERNAME || "admin";
-      const envPassword = (env as any).ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "admin123";
+      const cloudflareEnv = env as Record<string, string | undefined>;
+      const envUsername = cloudflareEnv.ADMIN_USERNAME || process.env.ADMIN_USERNAME || "admin";
+      const envPassword = cloudflareEnv.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "admin123";
       
       const count = await AdminModel.countDocuments({});
       if (count === 0) {
@@ -48,8 +49,9 @@ export class AdminService {
   }
 
   static async authenticate(username: string, password: string): Promise<boolean> {
-    const envUsername = (env as any).ADMIN_USERNAME || process.env.ADMIN_USERNAME || "admin";
-    const envPassword = (env as any).ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "admin123";
+    const cloudflareEnv = env as Record<string, string | undefined>;
+    const envUsername = cloudflareEnv.ADMIN_USERNAME || process.env.ADMIN_USERNAME || "admin";
+    const envPassword = cloudflareEnv.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "admin123";
 
     try {
       await this.seedAdmin();

@@ -20,7 +20,7 @@ export async function checkAdminAuthFromRequest(request: Request): Promise<boole
       if (tokenParts.length === 2) {
         return await AdminService.authenticate(tokenParts[0], tokenParts[1]);
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }
@@ -46,8 +46,9 @@ export class AdminController {
       } else {
         return Response.json({ error: "Invalid username or password" }, { status: 401 });
       }
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Authentication failed" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Authentication failed";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 }

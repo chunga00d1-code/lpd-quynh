@@ -6,11 +6,9 @@ export class SettingsController {
     try {
       const settings = await SettingsService.getSettings();
       return Response.json({ settings });
-    } catch (error: any) {
-      return Response.json(
-        { error: error.message || "Failed to fetch settings" },
-        { status: 500 }
-      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to fetch settings";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -24,11 +22,9 @@ export class SettingsController {
       const body = await request.json();
       const updated = await SettingsService.updateSettings(body);
       return Response.json({ success: true, settings: updated });
-    } catch (error: any) {
-      return Response.json(
-        { error: error.message || "Failed to update settings" },
-        { status: 500 }
-      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to update settings";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 }

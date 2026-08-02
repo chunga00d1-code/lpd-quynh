@@ -9,10 +9,11 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     return mongoose;
   }
 
-  const baseUri = (env as any).MONGODB_URI || process.env.MONGODB_URI || "mongodb://localhost:27017/luna_nail_studio";
-  const user = (env as any).MONGODB_USER || process.env.MONGODB_USER || "";
-  const password = (env as any).MONGODB_PASSWORD || process.env.MONGODB_PASSWORD || "";
-  const authSource = (env as any).MONGODB_AUTH_SOURCE || process.env.MONGODB_AUTH_SOURCE || "admin";
+  const cloudflareEnv = env as Record<string, string | undefined>;
+  const baseUri = cloudflareEnv.MONGODB_URI || process.env.MONGODB_URI || "mongodb://localhost:27017/luna_nail_studio";
+  const user = cloudflareEnv.MONGODB_USER || process.env.MONGODB_USER || "";
+  const password = cloudflareEnv.MONGODB_PASSWORD || process.env.MONGODB_PASSWORD || "";
+  const authSource = cloudflareEnv.MONGODB_AUTH_SOURCE || process.env.MONGODB_AUTH_SOURCE || "admin";
 
   let finalUri = baseUri;
   if (user && password) {
@@ -24,7 +25,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
         url.searchParams.set("authSource", authSource);
       }
       finalUri = url.toString();
-    } catch (e) {
+    } catch {
       if (baseUri.startsWith("mongodb://") || baseUri.startsWith("mongodb+srv://")) {
         const prefix = baseUri.startsWith("mongodb+srv://") ? "mongodb+srv://" : "mongodb://";
         const rest = baseUri.substring(prefix.length);
@@ -39,7 +40,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
       const url = new URL(baseUri);
       url.searchParams.set("authSource", authSource);
       finalUri = url.toString();
-    } catch (e) {
+    } catch {
       if (baseUri.includes("?")) {
         finalUri = `${baseUri}&authSource=${authSource}`;
       } else {

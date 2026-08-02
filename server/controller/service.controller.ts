@@ -6,8 +6,9 @@ export class ServiceController {
     try {
       const services = await ServiceService.getAllServices();
       return Response.json({ services });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to fetch services" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to fetch services";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -35,8 +36,9 @@ export class ServiceController {
       });
       
       return Response.json({ success: true, serviceId: service._id }, { status: 201 });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to create service" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to create service";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -68,8 +70,9 @@ export class ServiceController {
       }
       
       return Response.json({ success: true });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to update service" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to update service";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 
@@ -93,8 +96,9 @@ export class ServiceController {
       }
       
       return Response.json({ success: true });
-    } catch (error: any) {
-      return Response.json({ error: error.message || "Failed to delete service" }, { status: 500 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to delete service";
+      return Response.json({ error: message }, { status: 500 });
     }
   }
 }

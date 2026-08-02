@@ -30,7 +30,7 @@ export class SettingsService {
       return settings;
     } catch (e) {
       console.warn("MongoDB connection failed. Returning default settings fallback.", e);
-      return DEFAULT_SETTINGS as any;
+      return DEFAULT_SETTINGS as unknown as ISettings;
     }
   }
 

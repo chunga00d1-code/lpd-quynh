@@ -16,7 +16,7 @@ try {
       port = parseInt(portMatch[1]);
     }
   }
-} catch (e) {
+} catch {
   // ignore
 }
 
