@@ -124,7 +124,7 @@ const DEFAULT_SETTINGS: Settings = {
   phone: "0383088262",
   email: "hello@quynhnail.vn",
   address: "số nhà 81, Nam Lý, Trung Giã, Hà Nội",
-  openHours: "09:00 — 20:30 · Thứ 2 — Chủ nhật",
+  openHours: "08:00 — 20:00 · Thứ 2 — Chủ nhật",
   instagramUrl: "#",
   facebookUrl: "#",
   tiktokUrl: "#",
@@ -919,7 +919,7 @@ export default function Home() {
 
       <footer id="contact">
         <div className="footer-brand"><span className="brand"><span>Quỳnh</span> Nail ART</span><p>Vẻ đẹp nằm trong từng chi tiết.</p></div>
-        <div><strong>Ghé Quỳnh</strong><p>{settings.address || "số nhà 81, Nam Lý, Trung Giã, Hà Nội"}</p><p>{settings.openHours || "09:00 — 20:30 · Thứ 2 — Chủ nhật"}</p></div>
+        <div><strong>Ghé Quỳnh</strong><p>{settings.address || "số nhà 81, Nam Lý, Trung Giã, Hà Nội"}</p><p>{settings.openHours || "08:00 — 20:00 · Thứ 2 — Chủ nhật"}</p></div>
         <div><strong>Liên hệ</strong><a href={`tel:${settings.phone || "0383088262"}`}>{settings.phone || "0383088262"}</a><a href={`mailto:${settings.email || "hello@quynhnail.vn"}`}>{settings.email || "hello@quynhnail.vn"}</a></div>
         <div>
           <strong>Theo dõi</strong>

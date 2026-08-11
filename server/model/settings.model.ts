@@ -20,7 +20,7 @@ const SettingsSchema = new Schema<ISettings>({
   phone: { type: String, default: "0383088262" },
   email: { type: String, default: "hello@quynhnail.vn" },
   address: { type: String, default: "số nhà 81, Nam Lý, Trung Giã, Hà Nội" },
-  openHours: { type: String, default: "09:00 — 20:30 · Thứ 2 — Chủ nhật" },
+  openHours: { type: String, default: "08:00 — 20:00 · Thứ 2 — Chủ nhật" },
   instagramUrl: { type: String, default: "#" },
   facebookUrl: { type: String, default: "#" },
   tiktokUrl: { type: String, default: "#" },

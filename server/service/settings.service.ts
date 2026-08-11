@@ -6,7 +6,7 @@ const DEFAULT_SETTINGS = {
   phone: "0383088262",
   email: "hello@quynhnail.vn",
   address: "số nhà 81, Nam Lý, Trung Giã, Hà Nội",
-  openHours: "09:00 — 20:30 · Thứ 2 — Chủ nhật",
+  openHours: "08:00 — 20:00 · Thứ 2 — Chủ nhật",
   instagramUrl: "#",
   facebookUrl: "#",
   tiktokUrl: "#",
