@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   luna-nail-studio:
-    image: ghcr.io/chung2310/luna-nail-studio:${IMAGE_TAG:-latest}
+    image: ${IMAGE_NAME:-ghcr.io/chung2310/luna-nail-studio}:${IMAGE_TAG:-latest}
     container_name: ${CONTAINER_NAME:-luna-nail-studio}
     restart: always
     ports:

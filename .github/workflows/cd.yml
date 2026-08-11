@@ -112,6 +112,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set lowercase image name
+        run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
       # --- Triển khai lên Staging (nhánh develop) ---
       - name: Copy docker-compose.yml to Staging VPS
         if: github.ref_name == 'develop'
@@ -129,12 +132,13 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         env:
           ENV_FILE_CONTENT: ${{ secrets.ENV_FILE }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT || '22' }}
-          envs: ENV_FILE_CONTENT
+          envs: ENV_FILE_CONTENT,IMAGE_NAME
           script: |
             TARGET_DIR="/opt/luna-nail-studio/staging"
             IMAGE_TAG="develop"
@@ -156,10 +160,10 @@ jobs:
 
             # Tải (pull) image mới trước khi tắt container cũ để giảm tối đa downtime
             export COMPOSE_PROJECT_NAME="$CONTAINER_NAME"
-            IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose pull
+            IMAGE_NAME="$IMAGE_NAME" IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose pull
 
             # Khởi động lại container mới (Docker compose tự động recreate và restart với downtime tối thiểu)
-            IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose up -d --remove-orphans
+            IMAGE_NAME="$IMAGE_NAME" IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose up -d --remove-orphans
 
             # Giải phóng dung lượng ổ đĩa bằng cách xóa các image dangling/rác cũ
             docker image prune -f
@@ -181,12 +185,13 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         env:
           ENV_FILE_CONTENT: ${{ secrets.ENV_FILE_PROD }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
         with:
           host: ${{ secrets.SSH_HOST_PROD }}
           username: ${{ secrets.SSH_USER_PROD }}
           key: ${{ secrets.SSH_KEY_PROD }}
           port: ${{ secrets.SSH_PORT_PROD || '22' }}
-          envs: ENV_FILE_CONTENT
+          envs: ENV_FILE_CONTENT,IMAGE_NAME
           script: |
             TARGET_DIR="/opt/luna-nail-studio/production"
             IMAGE_TAG="production"
@@ -207,10 +212,10 @@ jobs:
 
             # Tải (pull) image mới trước khi tắt container cũ để giảm tối đa downtime
             export COMPOSE_PROJECT_NAME="$CONTAINER_NAME"
-            IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose pull
+            IMAGE_NAME="$IMAGE_NAME" IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose pull
 
             # Khởi động lại container mới
-            IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose up -d --remove-orphans
+            IMAGE_NAME="$IMAGE_NAME" IMAGE_TAG="$IMAGE_TAG" CONTAINER_NAME="$CONTAINER_NAME" docker compose up -d --remove-orphans
 
             # Giải phóng dung lượng ổ đĩa bằng cách xóa các image dangling/rác cũ
             docker image prune -f
