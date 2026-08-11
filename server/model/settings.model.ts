@@ -23,7 +23,7 @@ const SettingsSchema = new Schema<ISettings>({
   openHours: { type: String, default: "08:00 — 20:00 · Thứ 2 — Chủ nhật" },
   instagramUrl: { type: String, default: "#" },
   facebookUrl: { type: String, default: "#" },
-  tiktokUrl: { type: String, default: "#" },
+  tiktokUrl: { type: String, default: "https://www.tiktok.com/@2uyn21" },
   heroTitle: { type: String, default: "Nâng niu từng đầu ngón tay" },
   heroText: { type: String, default: "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại." },
   aboutText: { type: String, default: "Quỳnh tin rằng thời gian làm nail cũng là lúc bạn dành một khoảng nghỉ cho chính mình. Vì vậy, mỗi trải nghiệm đều được thiết kế để thật chỉn chu, sạch sẽ và thoải mái." },

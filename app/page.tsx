@@ -4,6 +4,24 @@ import { useState, useEffect, useRef } from "react";
 
 const Arrow = () => <span aria-hidden="true">→</span>;
 
+const TikTokIcon = () => (
+  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="1.1em" width="1.1em" style={{ display: "inline-block", verticalAlign: "middle", marginRight: "6px" }} xmlns="http://www.w3.org/2000/svg">
+    <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path>
+  </svg>
+);
+
+const InstagramIcon = () => (
+  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="1.1em" width="1.1em" style={{ display: "inline-block", verticalAlign: "middle", marginRight: "6px" }} xmlns="http://www.w3.org/2000/svg">
+    <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+  </svg>
+);
+
+const FacebookIcon = () => (
+  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 320 512" height="1.1em" width="1.1em" style={{ display: "inline-block", verticalAlign: "middle", marginRight: "6px" }} xmlns="http://www.w3.org/2000/svg">
+    <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"></path>
+  </svg>
+);
+
 const STATS = [
   { label: "Khách hàng hài lòng", value: 500, suffix: "+", decimals: 0 },
   { label: "Bộ nail hoàn thiện", value: 1200, suffix: "+", decimals: 0 },
@@ -127,7 +145,7 @@ const DEFAULT_SETTINGS: Settings = {
   openHours: "08:00 — 20:00 · Thứ 2 — Chủ nhật",
   instagramUrl: "#",
   facebookUrl: "#",
-  tiktokUrl: "#",
+  tiktokUrl: "https://www.tiktok.com/@2uyn21",
   heroTitle: "Nâng niu từng đầu ngón tay",
   heroText: "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.",
   aboutText: "Quỳnh tin rằng thời gian làm nail cũng là lúc bạn dành một khoảng nghỉ cho chính mình. Vì vậy, mỗi trải nghiệm đều được thiết kế để thật chỉn chu, sạch sẽ và thoải mái."
@@ -164,6 +182,17 @@ export default function Home() {
 
   // Header scroll detection state
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Tiến trình cuộn trang (0-1), dùng cho thanh progress bar dính đầu trang
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Giá trị số liệu đang đếm lên trong khối thống kê
+  const [statValues, setStatValues] = useState<number[]>(STATS.map(() => 0));
+  const statsAnimatedRef = useRef(false);
+
+  // Vị trí % của thanh kéo so sánh trước/sau trên ảnh hero
+  const [sliderPos, setSliderPos] = useState(50);
+  const heroArtRef = useRef<HTMLDivElement>(null);
 
   // Active section for nav highlighting while scrolling
   const [activeSection, setActiveSection] = useState("home");
@@ -319,10 +348,71 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - doc.clientHeight;
+      setScrollProgress(scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0);
     };
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Đếm số liệu thống kê chạy lên khi khối stats xuất hiện trong khung nhìn
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStatValues(STATS.map((s) => s.value));
+      return;
+    }
+    const section = document.querySelector<HTMLElement>(".stats");
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !statsAnimatedRef.current) {
+            statsAnimatedRef.current = true;
+            const duration = 1400;
+            const start = performance.now();
+            const tick = (now: number) => {
+              const progress = Math.min((now - start) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              setStatValues(STATS.map((s) => s.value * eased));
+              if (progress < 1) window.requestAnimationFrame(tick);
+            };
+            window.requestAnimationFrame(tick);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  // Kéo thanh so sánh trước/sau trên ảnh hero
+  const updateSliderFromClientX = (clientX: number) => {
+    const el = heroArtRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setSliderPos(Math.min(96, Math.max(4, pct)));
+  };
+
+  const handleSliderPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    updateSliderFromClientX(e.clientX);
+    const onMove = (ev: PointerEvent) => updateSliderFromClientX(ev.clientX);
+    const onUp = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  };
+
+  const handleSliderKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "ArrowLeft") setSliderPos((p) => Math.max(4, p - 5));
+    if (e.key === "ArrowRight") setSliderPos((p) => Math.min(96, p + 5));
+  };
 
   // Smooth scroll for anchor links
   useEffect(() => {
@@ -682,6 +772,9 @@ export default function Home() {
 
   return (
     <main>
+      <div className="scroll-progress-track" aria-hidden="true">
+        <div className="scroll-progress-bar" style={{ transform: `scaleX(${scrollProgress})` }} />
+      </div>
       <div className="cursor-dot" aria-hidden="true" />
       <div className="cursor-ring" aria-hidden="true" />
       <header className={`site-header ${isScrolled ? "scrolled" : ""}`}>
@@ -727,15 +820,48 @@ export default function Home() {
             <a className="text-link" href="#services">Xem dịch vụ <Arrow /></a>
           </div>
         </div>
-        <div className="hero-art" role="img" aria-label="Bộ móng màu đỏ burgundy và ngọc trai sang trọng">
+        <div
+          className="hero-art before-after"
+          ref={heroArtRef}
+          role="img"
+          aria-label="Kéo để so sánh móng tay trước và sau khi làm nail tại Quỳnh Nail ART"
+          onPointerDown={handleSliderPointerDown}
+        >
           <div className="pearl-ring" />
-          <img src="/hero-burgundy-nails.png" alt="Mẫu nail đỏ burgundy tại Quỳnh Nail ART" />
+          <div className="ba-after">
+            <img src="/hero-burgundy-nails.png" alt="Mẫu nail đỏ burgundy tại Quỳnh Nail ART" />
+          </div>
+          <div className="ba-before" style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}>
+            <div className="ba-before-fill" />
+          </div>
+          <span className="ba-tag ba-tag-before" style={{ opacity: sliderPos > 12 ? 1 : 0 }}>Trước</span>
+          <span className="ba-tag ba-tag-after" style={{ opacity: sliderPos < 88 ? 1 : 0 }}>Sau</span>
+          <div className="ba-divider" style={{ left: `${sliderPos}%` }}>
+            <button
+              type="button"
+              className="ba-handle"
+              aria-label="Kéo để so sánh trước và sau"
+              onKeyDown={handleSliderKeyDown}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              <span aria-hidden="true">↔</span>
+            </button>
+          </div>
         </div>
         <div className="trust-bar" aria-label="Cam kết dịch vụ">
           <div><span>♙</span><p><strong>Sơn gel cao cấp</strong><small>An toàn, bền màu</small></p></div>
           <div><span>▣</span><p><strong>Dụng cụ tiệt trùng</strong><small>Quy trình vệ sinh kỹ</small></p></div>
           <div><span>♢</span><p><strong>Thiết kế theo yêu cầu</strong><small>Cá nhân hóa từng mẫu</small></p></div>
         </div>
+      </section>
+
+      <section className="stats reveal" aria-label="Con số ấn tượng">
+        {STATS.map((s, i) => (
+          <div className="stat-item" key={s.label}>
+            <strong>{statValues[i].toFixed(s.decimals)}{s.suffix}</strong>
+            <span>{s.label}</span>
+          </div>
+        ))}
       </section>
 
       <section className="section services reveal" id="services">
@@ -828,6 +954,13 @@ export default function Home() {
         <blockquote>Lần nào đến Quỳnh mình cũng được tư vấn rất kỹ. Mẫu nail vừa xinh, vừa đúng phong cách mà mình muốn.</blockquote>
         <div className="stars">★★★★★</div>
         <p className="customer">Minh Anh · Khách hàng thân thiết</p>
+        <div className="marquee" aria-hidden="true">
+          <div className="marquee-track">
+            {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+              <span key={i}>{item}</span>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className="booking reveal" id="booking">
@@ -923,17 +1056,17 @@ export default function Home() {
         <div><strong>Liên hệ</strong><a href={`tel:${settings.phone || "0383088262"}`}>{settings.phone || "0383088262"}</a><a href={`mailto:${settings.email || "hello@quynhnail.vn"}`}>{settings.email || "hello@quynhnail.vn"}</a></div>
         <div>
           <strong>Theo dõi</strong>
-          <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer">Instagram</a>
-          <a href={settings.facebookUrl || "#"} target="_blank" rel="noreferrer">Facebook</a>
-          <a href={settings.tiktokUrl || "#"} target="_blank" rel="noreferrer">TikTok</a>
+          <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><InstagramIcon />Instagram</a>
+          <a href={settings.facebookUrl || "#"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><FacebookIcon />Facebook</a>
+          <a href={settings.tiktokUrl || "https://www.tiktok.com/@2uyn21"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><TikTokIcon />TikTok</a>
         </div>
         <p className="copyright">© 2026 Quỳnh Nail ART. All rights reserved.</p>
       </footer>
 
       {/* Admin Floating Trigger Button */}
       <div 
-        className="admin-trigger-btn" 
-        onClick={() => setShowAdminPortal(true)}
+        className="admin-trigger-btn"
+        onClick={() => runViewTransition(() => setShowAdminPortal(true))}
         title="Admin Portal"
       >
         ⚙
@@ -947,7 +1080,7 @@ export default function Home() {
             <div className="admin-modal-card login-card">
               <div className="admin-modal-header">
                 <h3>Xác thực Admin</h3>
-                <button className="admin-close-btn" onClick={() => setShowAdminPortal(false)}>×</button>
+                <button className="admin-close-btn" onClick={() => runViewTransition(() => setShowAdminPortal(false))}>×</button>
               </div>
               <div className="admin-modal-body">
                 <form onSubmit={handleAdminLogin} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -983,7 +1116,7 @@ export default function Home() {
                 <h3>Quỳnh Salon Manager</h3>
                 <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                   <button className="admin-btn admin-btn-secondary" style={{ padding: "8px 16px" }} onClick={handleAdminLogout}>Đăng xuất</button>
-                  <button className="admin-close-btn" onClick={() => setShowAdminPortal(false)}>×</button>
+                  <button className="admin-close-btn" onClick={() => runViewTransition(() => setShowAdminPortal(false))}>×</button>
                 </div>
               </div>
 
