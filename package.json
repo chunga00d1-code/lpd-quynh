@@ -10,7 +10,7 @@
     "dev": "vite --port 5002",
     "build": "bash scripts/build-verified.sh",
     "start": "vinext start --port 5002",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run build && node --import ./tests/register.js --test tests/rendered-html.test.mjs",
     "validate:artifact": "bash scripts/validate-artifact.sh",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit",
