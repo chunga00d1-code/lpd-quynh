@@ -8,7 +8,7 @@ const DEFAULT_SETTINGS = {
   address: "số nhà 81, Nam Lý, Trung Giã, Hà Nội",
   openHours: "08:00 — 20:00 · Thứ 2 — Chủ nhật",
   instagramUrl: "#",
-  facebookUrl: "#",
+  facebookUrl: "https://www.facebook.com/nguyen.quynh.597831",
   tiktokUrl: "https://www.tiktok.com/@2uyn21",
   heroTitle: "Nâng niu từng đầu ngón tay",
   heroText: "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.",

@@ -144,7 +144,7 @@ const DEFAULT_SETTINGS: Settings = {
   address: "số nhà 81, Nam Lý, Trung Giã, Hà Nội",
   openHours: "08:00 — 20:00 · Thứ 2 — Chủ nhật",
   instagramUrl: "#",
-  facebookUrl: "#",
+  facebookUrl: "https://www.facebook.com/nguyen.quynh.597831",
   tiktokUrl: "https://www.tiktok.com/@2uyn21",
   heroTitle: "Nâng niu từng đầu ngón tay",
   heroText: "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.",
@@ -1057,7 +1057,7 @@ export default function Home() {
         <div>
           <strong>Theo dõi</strong>
           <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><InstagramIcon />Instagram</a>
-          <a href={settings.facebookUrl || "#"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><FacebookIcon />Facebook</a>
+          <a href={settings.facebookUrl || "https://www.facebook.com/nguyen.quynh.597831"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><FacebookIcon />Facebook</a>
           <a href={settings.tiktokUrl || "https://www.tiktok.com/@2uyn21"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><TikTokIcon />TikTok</a>
         </div>
         <p className="copyright">© 2026 Quỳnh Nail ART. All rights reserved.</p>

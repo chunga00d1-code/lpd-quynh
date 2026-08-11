@@ -22,7 +22,7 @@ const SettingsSchema = new Schema<ISettings>({
   address: { type: String, default: "số nhà 81, Nam Lý, Trung Giã, Hà Nội" },
   openHours: { type: String, default: "08:00 — 20:00 · Thứ 2 — Chủ nhật" },
   instagramUrl: { type: String, default: "#" },
-  facebookUrl: { type: String, default: "#" },
+  facebookUrl: { type: String, default: "https://www.facebook.com/nguyen.quynh.597831" },
   tiktokUrl: { type: String, default: "https://www.tiktok.com/@2uyn21" },
   heroTitle: { type: String, default: "Nâng niu từng đầu ngón tay" },
   heroText: { type: String, default: "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại." },
