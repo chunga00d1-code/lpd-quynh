@@ -258,9 +258,15 @@ export default function Home() {
   useEffect(() => {
     looks.forEach((look) => {
       const id = look._id || look.title;
-      if (!look.imageUrl || loadedLookImages[id]) return;
+      const fallbackImageMap: Record<string, string> = {
+        "Burgundy Pearl": "/look-burgundy.png",
+        "Milky Chrome": "/look-milk.png",
+        "Modern French": "/look-french.png",
+      };
+      const imageUrl = look.imageUrl || fallbackImageMap[look.title];
+      if (!imageUrl || loadedLookImages[id]) return;
       const img = new Image();
-      img.src = look.imageUrl;
+      img.src = imageUrl;
       img.onload = () => setLoadedLookImages((prev) => ({ ...prev, [id]: true }));
     });
     // loadedLookImages intentionally excluded: it's checked, not reacted to, to avoid re-preloading on every load
@@ -928,19 +934,25 @@ export default function Home() {
         <div className="look-grid">
           {looks.map((look) => {
             const lookId = look._id || look.title;
-            const isImgLoaded = loadedLookImages[lookId];
+            const fallbackImageMap: Record<string, string> = {
+              "Burgundy Pearl": "/look-burgundy.png",
+              "Milky Chrome": "/look-milk.png",
+              "Modern French": "/look-french.png",
+            };
+            const imageUrl = look.imageUrl || fallbackImageMap[look.title] || "";
+            const isImgLoaded = loadedLookImages[lookId] || (!look.imageUrl && fallbackImageMap[look.title]);
             return (
             <article
-              className={`look-card card-reveal ${look.className} ${look.imageUrl && !isImgLoaded ? "img-loading" : ""}`}
+              className={`look-card card-reveal ${look.className} ${imageUrl && !isImgLoaded ? "img-loading" : ""}`}
               key={lookId}
-              style={look.imageUrl ? {
-                background: `url(${look.imageUrl}) center/cover no-repeat`,
+              style={imageUrl ? {
+                background: `url(${imageUrl}) center/cover no-repeat`,
                 border: "none"
               } : {}}
               onMouseMove={handleCardTilt}
               onMouseLeave={resetCardTilt}
             >
-              {!look.imageUrl && (
+              {!imageUrl && (
                 <>
                   <div className="nail nail-a" />
                   <div className="nail nail-b" />
