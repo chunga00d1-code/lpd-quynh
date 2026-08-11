@@ -1050,12 +1050,12 @@ export default function Home() {
 
       <footer id="contact">
         <div className="footer-brand"><span className="brand"><span>Quỳnh</span> Nail ART</span><p>Vẻ đẹp nằm trong từng chi tiết.</p></div>
-        <div><strong>Ghé Quỳnh</strong><p>{settings.address || "số nhà 81, Nam Lý, Trung Giã, Hà Nội"}</p><p>{settings.openHours || "08:00 — 20:00 · Thứ 2 — Chủ nhật"}</p></div>
-        <div><strong>Liên hệ</strong><a href={`tel:${settings.phone || "0383088262"}`}>{settings.phone || "0383088262"}</a><a href={`mailto:${settings.email || "hello@quynhnail.vn"}`}>{settings.email || "hello@quynhnail.vn"}</a></div>
+        <div><strong>Ghé Quỳnh</strong><p>số nhà 81, Nam Lý, Trung Giã, Hà Nội</p><p>08:00 — 20:00 · Thứ 2 — Chủ nhật</p></div>
+        <div><strong>Liên hệ</strong><a href="tel:0383088262">0383088262</a><a href="mailto:hello@quynhnail.vn">hello@quynhnail.vn</a></div>
         <div>
           <strong>Theo dõi</strong>
-          <a href={settings.facebookUrl || "https://www.facebook.com/nguyen.quynh.597831"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><FacebookIcon />Facebook</a>
-          <a href={settings.tiktokUrl || "https://www.tiktok.com/@2uyn21"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><TikTokIcon />TikTok</a>
+          <a href="https://www.facebook.com/nguyen.quynh.597831" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><FacebookIcon />Facebook</a>
+          <a href="https://www.tiktok.com/@2uyn21" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><TikTokIcon />TikTok</a>
         </div>
         <p className="copyright">© 2026 Quỳnh Nail ART. All rights reserved.</p>
       </footer>
