@@ -43,6 +43,33 @@ h1{font-size:clamp(72px,7.2vw,116px);line-height:.77;color:var(--wine)}
 .hero-art{position:relative;overflow:hidden;border-radius:48% 0 0 48% / 55% 0 0 55%;background:var(--burgundy);animation:reveal .9s both;will-change:transform}.hero-art img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;animation:zoom .9s both}.pearl-ring{position:absolute;inset:7% auto -8% -4%;width:80%;border:8px solid rgba(235,203,210,.45);border-right-color:rgba(185,189,196,.85);border-radius:50%;z-index:2;pointer-events:none}
 .trust-bar{position:absolute;z-index:5;bottom:30px;left:5vw;width:min(760px,66vw);background:rgba(255,253,250,.94);box-shadow:0 18px 48px rgba(59,11,24,.12);border-radius:22px;padding:22px 30px;display:grid;grid-template-columns:repeat(3,1fr)}
 .trust-bar>div{display:flex;gap:14px;align-items:center;padding:0 16px;border-right:1px solid var(--line)}.trust-bar>div:last-child{border:0}.trust-bar>div>span{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--pink);color:var(--burgundy);font-size:20px}.trust-bar p{margin:0}.trust-bar strong,.trust-bar small{display:block}.trust-bar strong{font-size:13px}.trust-bar small{font-size:10px;color:#7b686c;margin-top:4px}
+
+/* Thanh tiến trình cuộn trang, dính đầu trang */
+.scroll-progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(101,22,42,.08);z-index:9998}
+.scroll-progress-bar{height:100%;width:100%;background:var(--burgundy);transform-origin:0 0;transform:scaleX(0)}
+
+/* Khối số liệu đếm lên */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:70px 7vw;background:#fffdfa;border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+.stat-item strong{display:block;font-family:var(--font-playfair);font-size:clamp(32px,3.4vw,46px);color:var(--burgundy)}
+.stat-item span{display:block;margin-top:8px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#7b686c}
+
+/* Thanh kéo so sánh trước/sau trên ảnh hero */
+.before-after{cursor:ew-resize;-webkit-user-select:none;user-select:none;touch-action:none}
+.ba-after,.ba-before{position:absolute;inset:0}
+.ba-after img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.ba-before-fill{width:100%;height:100%;background:linear-gradient(160deg,#f3d9d2,#e8c3ba 45%,#d9aa9d);position:relative}
+.ba-before-fill:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(100deg,rgba(101,22,42,.06) 0 22px,transparent 22px 44px)}
+.ba-divider{position:absolute;top:0;bottom:0;width:0;z-index:4;transform:translateX(-50%)}
+.ba-divider:before{content:"";position:absolute;top:0;bottom:0;left:0;width:2px;background:rgba(255,253,250,.85);box-shadow:0 0 12px rgba(0,0,0,.25)}
+.ba-handle{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;border:2px solid var(--burgundy);background:#fffdfa;color:var(--burgundy);display:grid;place-items:center;cursor:ew-resize;font-size:16px}
+.ba-tag{position:absolute;top:20px;z-index:3;font-size:10px;text-transform:uppercase;letter-spacing:.14em;padding:6px 12px;border-radius:20px;background:rgba(38,16,22,.55);color:#fff;transition:opacity .2s}
+.ba-tag-before{left:20px}.ba-tag-after{right:20px}
+
+/* Marquee lời khen cuộn ngang tự động */
+.marquee{margin-top:44px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;width:max-content;gap:48px;animation:marquee 26s linear infinite}
+.marquee-track span{white-space:nowrap;font-size:13px;letter-spacing:.08em;color:var(--burgundy);opacity:.75}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .section{padding:120px 7vw}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:60px;margin-bottom:60px}.section-heading h2,.about h2,.booking h2{font-size:clamp(52px,5.5vw,78px);line-height:.92}.section-heading>p{max-width:500px;line-height:1.8;color:#6d585d}
 .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.service-card{min-height:390px;padding:28px;border:1px solid var(--line);background:#fffdfa;position:relative;transition:.3s}.service-card:hover{transform:translateY(-7px);border-color:var(--burgundy);box-shadow:0 24px 55px rgba(59,11,24,.09)}.service-number{position:absolute;right:24px;top:24px;color:#a98b92;font-size:12px}.service-icon{font-family:var(--font-playfair);font-size:44px;color:var(--burgundy)}.service-card h3{font-family:var(--font-playfair);font-size:31px;margin:54px 0 14px}.service-card>p{color:#765f64;line-height:1.7;font-size:14px}.service-footer{position:absolute;left:28px;right:28px;bottom:28px;border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;align-items:center}.service-footer a{width:38px;height:38px;border-radius:50%;background:var(--burgundy);color:white;display:grid;place-items:center}
 .about{display:grid;grid-template-columns:1fr 1fr;background:var(--wine);color:var(--pearl);min-height:700px}.about-visual{min-height:700px;background:radial-gradient(circle at 40% 50%,#9a2a44 0,#65162a 42%,#350a16 75%);position:relative;overflow:hidden;display:grid;place-items:center}.big-l{font-family:var(--font-playfair);font-size:500px;color:rgba(255,255,255,.06);line-height:1}.about-visual p{position:absolute;left:12%;bottom:10%;font-family:var(--font-playfair);font-size:40px;font-style:italic}.polish{position:absolute;width:110px;height:230px;border-radius:40px 40px 20px 20px;background:linear-gradient(100deg,#2d0610,#8f203b 48%,#3c0714);box-shadow:0 28px 60px #21050c}.polish:before{content:"";position:absolute;left:29px;top:-95px;width:52px;height:105px;border-radius:14px;background:linear-gradient(90deg,#aaa,#f3f3f3,#7c8084)}.polish-one{transform:rotate(-13deg);left:32%;top:30%}.polish-two{transform:rotate(14deg) scale(.72);right:22%;top:28%;background:linear-gradient(100deg,#eee5e3,#fff,#c9b8b8)}
@@ -55,6 +82,13 @@ footer{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:45px;padding:7
 @media(max-width:960px){.site-header{padding:0 22px}.site-header nav{display:none}.hero{grid-template-columns:1fr;min-height:auto}.hero-copy{padding:70px 24px 55px}.hero-art{height:580px;border-radius:44% 0 0 0 / 22% 0 0 0}.trust-bar{position:relative;bottom:auto;left:auto;width:100%;border-radius:0}.section{padding:90px 24px}.about{grid-template-columns:1fr}.about-copy{padding:80px 24px}.section-heading{align-items:start;flex-direction:column}.look-grid{grid-template-columns:1fr 1fr}.look-card:last-child{grid-column:1/-1}.booking{grid-template-columns:1fr;padding:80px 24px}footer{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.site-header{height:72px}.brand{font-size:11px}.brand span{font-size:20px}.header-book{font-size:0;padding:11px}.header-book span{font-size:17px}.hero-copy{padding-top:58px}.hero-copy h1{font-size:66px}.hero-art{height:410px}.trust-bar{grid-template-columns:1fr;padding:14px 22px}.trust-bar>div{border-right:0;border-bottom:1px solid var(--line);padding:11px 0}.trust-bar>div:last-child{border-bottom:0}.service-grid,.look-grid{grid-template-columns:1fr}.service-card{min-height:330px}.look-card,.look-card:last-child{height:430px;grid-column:auto}.about-visual{min-height:500px}.about-copy{padding:70px 24px}.booking form{grid-template-columns:1fr}.booking label{grid-column:1/-1}footer{grid-template-columns:1fr}.copyright{grid-column:auto}.section-heading h2,.about h2,.booking h2{font-size:48px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+@media(max-width:960px){.stats{grid-template-columns:repeat(2,1fr);row-gap:34px}}
+@media(max-width:600px){.stats{padding:50px 24px}}
+
+/* Hiệu ứng chuyển cảnh mượt khi mở/đóng modal admin (View Transition API) */
+@media not (prefers-reduced-motion: reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.35s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+}
 
 /* --- ADMIN DASHBOARD & PREMIUM MODAL STYLES --- */
 .admin-trigger-btn {
