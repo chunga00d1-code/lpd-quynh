@@ -776,8 +776,9 @@ export default function Home() {
       <div className="cursor-dot" aria-hidden="true" />
       <div className="cursor-ring" aria-hidden="true" />
       <header className={`site-header ${isScrolled ? "scrolled" : ""}`}>
-        <a className="brand" href="#home" aria-label="Quỳnh Nail ART - Trang chủ">
-          <span>Quỳnh</span> Nail ART
+        <a className="brand" href="#home" aria-label="Quỳnh Nail ART - Trang chủ" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img src="/logo.png" alt="Quỳnh Nail ART Logo" style={{ height: "40px", width: "auto", borderRadius: "50%" }} />
+          <span><span>Quỳnh</span> Nail ART</span>
         </a>
         <nav aria-label="Điều hướng chính">
           <a href="#home" className={activeSection === "home" ? "active" : ""} aria-current={activeSection === "home" ? "true" : undefined}>Trang chủ</a>
@@ -1049,7 +1050,13 @@ export default function Home() {
       </section>
 
       <footer id="contact">
-        <div className="footer-brand"><span className="brand"><span>Quỳnh</span> Nail ART</span><p>Vẻ đẹp nằm trong từng chi tiết.</p></div>
+        <div className="footer-brand" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <img src="/logo.png" alt="Quỳnh Nail ART Logo" style={{ height: "40px", width: "auto", borderRadius: "50%", filter: "brightness(0) invert(1)" }} />
+            <span className="brand"><span>Quỳnh</span> Nail ART</span>
+          </div>
+          <p>Vẻ đẹp nằm trong từng chi tiết.</p>
+        </div>
         <div><strong>Ghé Quỳnh</strong><p>số nhà 81, Nam Lý, Trung Giã, Hà Nội</p><p>08:00 — 20:00 · Thứ 2 — Chủ nhật</p></div>
         <div><strong>Liên hệ</strong><a href="tel:0383088262">0383088262</a><a href="mailto:hello@quynhnail.vn">hello@quynhnail.vn</a></div>
         <div>
