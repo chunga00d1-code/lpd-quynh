@@ -1056,7 +1056,6 @@ export default function Home() {
         <div><strong>Liên hệ</strong><a href={`tel:${settings.phone || "0383088262"}`}>{settings.phone || "0383088262"}</a><a href={`mailto:${settings.email || "hello@quynhnail.vn"}`}>{settings.email || "hello@quynhnail.vn"}</a></div>
         <div>
           <strong>Theo dõi</strong>
-          <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><InstagramIcon />Instagram</a>
           <a href={settings.facebookUrl || "https://www.facebook.com/nguyen.quynh.597831"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><FacebookIcon />Facebook</a>
           <a href={settings.tiktokUrl || "https://www.tiktok.com/@2uyn21"} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><TikTokIcon />TikTok</a>
         </div>
@@ -1496,14 +1495,6 @@ export default function Home() {
                       </div>
 
                       <div className="form-grid-2" style={{ marginTop: "16px", marginBottom: "24px" }}>
-                        <div className="admin-input-group">
-                          <label>Instagram URL</label>
-                          <input 
-                            type="text" 
-                            value={settingsForm.instagramUrl} 
-                            onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, instagramUrl: e.target.value }))}
-                          />
-                        </div>
                         <div className="admin-input-group">
                           <label>Facebook URL</label>
                           <input 
