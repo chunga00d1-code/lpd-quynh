@@ -51,6 +51,14 @@ export class SettingsService {
           settings.tiktokUrl = "https://www.tiktok.com/@2uyn21";
           changed = true;
         }
+        if (!settings.heroTitle || settings.heroTitle.trim() === "'" || settings.heroTitle.trim() === "’" || settings.heroTitle.trim().length <= 3) {
+          settings.heroTitle = "Nâng niu từng đầu ngón tay";
+          changed = true;
+        }
+        if (!settings.heroText || settings.heroText.trim().length <= 5) {
+          settings.heroText = "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.";
+          changed = true;
+        }
         if (changed) {
           await settings.save();
         }
