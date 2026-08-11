@@ -2,8 +2,8 @@
 
 :root{--burgundy:#65162a;--wine:#3b0b18;--ink:#261016;--pink:#ebcbd2;--pearl:#faf7f3;--chrome:#b9bdc4;--line:#d9c8c4}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--pearl);color:var(--ink);font-family:var(--font-inter),"Inter",sans-serif;position:relative}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%}
+body{margin:0;background:var(--pearl);color:var(--ink);font-family:var(--font-inter),"Inter",sans-serif;position:relative;overflow-x:hidden;max-width:100%}
 
 /* --- MESH GRADIENT NỀN ĐỘNG --- */
 .mesh-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
