@@ -119,6 +119,8 @@ interface Settings {
   heroTitle: string;
   heroText: string;
   aboutText: string;
+  logoUrl: string;
+  heroImageUrl: string;
 }
 
 const DEFAULT_SERVICES: Service[] = [
@@ -144,7 +146,9 @@ const DEFAULT_SETTINGS: Settings = {
   tiktokUrl: "https://www.tiktok.com/@2uyn21",
   heroTitle: "Nâng niu từng đầu ngón tay",
   heroText: "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.",
-  aboutText: "Quỳnh tin rằng thời gian làm nail cũng là lúc bạn dành một khoảng nghỉ cho chính mình. Vì vậy, mỗi trải nghiệm đều được thiết kế để thật chỉn chu, sạch sẽ và thoải mái."
+  aboutText: "Quỳnh tin rằng thời gian làm nail cũng là lúc bạn dành một khoảng nghỉ cho chính mình. Vì vậy, mỗi trải nghiệm đều được thiết kế để thật chỉn chu, sạch sẽ và thoải mái.",
+  logoUrl: "",
+  heroImageUrl: ""
 };
 
 export default function Home() {
@@ -618,7 +622,7 @@ export default function Home() {
   };
 
   // Image Upload helper
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "service" | "look") => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "service" | "look" | "logo" | "hero") => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -629,14 +633,19 @@ export default function Home() {
     try {
       const res = await fetch("/api/upload", {
         method: "POST",
+        headers: { Authorization: `Bearer ${sessionToken}` },
         body: formData,
       });
       const data = await res.json();
       if (res.ok && data.url) {
         if (target === "service") {
           setServiceForm(prev => ({ ...prev, imageUrl: data.url }));
-        } else {
+        } else if (target === "look") {
           setLookForm(prev => ({ ...prev, imageUrl: data.url }));
+        } else if (target === "logo") {
+          setSettingsForm(prev => ({ ...prev, logoUrl: data.url }));
+        } else {
+          setSettingsForm(prev => ({ ...prev, heroImageUrl: data.url }));
         }
       } else {
         alert("Upload thất bại: " + (data.error || "Unknown error"));
@@ -777,7 +786,7 @@ export default function Home() {
       <div className="cursor-ring" aria-hidden="true" />
       <header className={`site-header ${isScrolled ? "scrolled" : ""}`}>
         <a className="brand" href="#home" aria-label="Quỳnh Nail ART - Trang chủ" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <img src="/logo.png" alt="Quỳnh Nail ART Logo" style={{ height: "40px", width: "auto", borderRadius: "50%" }} />
+          <img src={settings.logoUrl || "/logo.png"} alt="Quỳnh Nail ART Logo" style={{ height: "40px", width: "auto", borderRadius: "50%" }} />
           <span><span>Quỳnh</span> Nail ART</span>
         </a>
         <nav aria-label="Điều hướng chính">
@@ -828,7 +837,7 @@ export default function Home() {
         >
           <div className="pearl-ring" />
           <div className="ba-after">
-            <img src="/hero-burgundy-nails.png" alt="Mẫu nail đỏ burgundy tại Quỳnh Nail ART" />
+            <img src={settings.heroImageUrl || "/hero-burgundy-nails.png"} alt="Mẫu nail đỏ burgundy tại Quỳnh Nail ART" />
           </div>
           <div className="ba-before" style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}>
             <div className="ba-before-fill" />
@@ -1052,7 +1061,7 @@ export default function Home() {
       <footer id="contact">
         <div className="footer-brand" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/logo.png" alt="Quỳnh Nail ART Logo" style={{ height: "40px", width: "auto", borderRadius: "50%", filter: "brightness(0) invert(1)" }} />
+            <img src={settings.logoUrl || "/logo.png"} alt="Quỳnh Nail ART Logo" style={{ height: "40px", width: "auto", borderRadius: "50%", filter: settings.logoUrl ? undefined : "brightness(0) invert(1)" }} />
             <span className="brand"><span>Quỳnh</span> Nail ART</span>
           </div>
           <p>Vẻ đẹp nằm trong từng chi tiết.</p>
@@ -1497,6 +1506,37 @@ export default function Home() {
                           onChange={(e) => setSettingsForm((prev: Settings) => ({ ...prev, aboutText: e.target.value }))}
                           required 
                         />
+                      </div>
+
+                      <div className="form-grid-2" style={{ marginTop: "16px" }}>
+                        <div className="admin-input-group">
+                          <label>Logo</label>
+                          <div className="upload-btn-container">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, "logo")}
+                            />
+                            {uploadingImage && <span style={{ fontSize: "12px", color: "var(--burgundy)" }}>Đang upload...</span>}
+                            {settingsForm.logoUrl && (
+                              <img src={settingsForm.logoUrl} alt="Preview logo" className="upload-preview" />
+                            )}
+                          </div>
+                        </div>
+                        <div className="admin-input-group">
+                          <label>Ảnh Hero (trang chủ)</label>
+                          <div className="upload-btn-container">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, "hero")}
+                            />
+                            {uploadingImage && <span style={{ fontSize: "12px", color: "var(--burgundy)" }}>Đang upload...</span>}
+                            {settingsForm.heroImageUrl && (
+                              <img src={settingsForm.heroImageUrl} alt="Preview hero" className="upload-preview" />
+                            )}
+                          </div>
+                        </div>
                       </div>
 
                       <div className="form-grid-2" style={{ marginTop: "16px", marginBottom: "24px" }}>

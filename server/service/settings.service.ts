@@ -13,6 +13,8 @@ const DEFAULT_SETTINGS = {
   heroTitle: "Nâng niu từng đầu ngón tay",
   heroText: "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.",
   aboutText: "Quỳnh tin rằng thời gian làm nail cũng là lúc bạn dành một khoảng nghỉ cho chính mình. Vì vậy, mỗi trải nghiệm đều được thiết kế để thật chỉn chu, sạch sẽ và thoải mái.",
+  logoUrl: "",
+  heroImageUrl: "",
   updatedAt: new Date()
 };
 
