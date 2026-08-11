@@ -3,9 +3,9 @@ import { SettingsModel, ISettings } from "../model/settings.model";
 
 const DEFAULT_SETTINGS = {
   salonName: "Quỳnh Nail ART",
-  phone: "0901 234 567",
+  phone: "0383088262",
   email: "hello@quynhnail.vn",
-  address: "25 Nguyễn Trãi, Hà Nội",
+  address: "số nhà 81, Nam Lý, Trung Giã, Hà Nội",
   openHours: "09:00 — 20:30 · Thứ 2 — Chủ nhật",
   instagramUrl: "#",
   facebookUrl: "#",

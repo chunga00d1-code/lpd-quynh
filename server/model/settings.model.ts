@@ -17,9 +17,9 @@ export interface ISettings {
 
 const SettingsSchema = new Schema<ISettings>({
   salonName: { type: String, default: "Quỳnh Nail ART" },
-  phone: { type: String, default: "0901 234 567" },
+  phone: { type: String, default: "0383088262" },
   email: { type: String, default: "hello@quynhnail.vn" },
-  address: { type: String, default: "25 Nguyễn Trãi, Hà Nội" },
+  address: { type: String, default: "số nhà 81, Nam Lý, Trung Giã, Hà Nội" },
   openHours: { type: String, default: "09:00 — 20:30 · Thứ 2 — Chủ nhật" },
   instagramUrl: { type: String, default: "#" },
   facebookUrl: { type: String, default: "#" },

@@ -1,8 +1,38 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Arrow = () => <span aria-hidden="true">→</span>;
+
+const STATS = [
+  { label: "Khách hàng hài lòng", value: 500, suffix: "+", decimals: 0 },
+  { label: "Bộ nail hoàn thiện", value: 1200, suffix: "+", decimals: 0 },
+  { label: "Đánh giá trung bình", value: 4.9, suffix: "/5", decimals: 1 },
+  { label: "Năm kinh nghiệm", value: 3, suffix: "+", decimals: 0 },
+];
+
+const MARQUEE_ITEMS = [
+  "★★★★★ Dịch vụ tận tâm",
+  "★★★★★ Không gian thư giãn",
+  "★★★★★ Mẫu nail đẹp, bền màu",
+  "★★★★★ Nhân viên chuyên nghiệp",
+  "★★★★★ Đặt lịch dễ dàng",
+];
+
+// Chuyển đổi trạng thái modal admin qua View Transition API cho hiệu ứng
+// crossfade mượt (khi trình duyệt hỗ trợ và người dùng không tắt hiệu ứng chuyển động).
+const runViewTransition = (apply: () => void) => {
+  const supportsViewTransition =
+    typeof document !== "undefined" && "startViewTransition" in document;
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (supportsViewTransition && !reducedMotion) {
+    (document as Document & { startViewTransition: (cb: () => void) => void }).startViewTransition(apply);
+  } else {
+    apply();
+  }
+};
 
 // Magnetic tilt: thẻ nghiêng nhẹ theo hướng con trỏ chuột, mượt & "cao cấp" hơn hover phẳng
 const handleCardTilt = (e: React.MouseEvent<HTMLElement>) => {
@@ -91,9 +121,9 @@ const DEFAULT_LOOKS: Look[] = [
 
 const DEFAULT_SETTINGS: Settings = {
   salonName: "Quỳnh Nail ART",
-  phone: "0901 234 567",
+  phone: "0383088262",
   email: "hello@quynhnail.vn",
-  address: "25 Nguyễn Trãi, Hà Nội",
+  address: "số nhà 81, Nam Lý, Trung Giã, Hà Nội",
   openHours: "09:00 — 20:30 · Thứ 2 — Chủ nhật",
   instagramUrl: "#",
   facebookUrl: "#",
@@ -889,8 +919,8 @@ export default function Home() {
 
       <footer id="contact">
         <div className="footer-brand"><span className="brand"><span>Quỳnh</span> Nail ART</span><p>Vẻ đẹp nằm trong từng chi tiết.</p></div>
-        <div><strong>Ghé Quỳnh</strong><p>{settings.address || "25 Nguyễn Trãi, Hà Nội"}</p><p>{settings.openHours || "09:00 — 20:30 · Thứ 2 — Chủ nhật"}</p></div>
-        <div><strong>Liên hệ</strong><a href={`tel:${settings.phone || "0901234567"}`}>{settings.phone || "0901 234 567"}</a><a href={`mailto:${settings.email || "hello@quynhnail.vn"}`}>{settings.email || "hello@quynhnail.vn"}</a></div>
+        <div><strong>Ghé Quỳnh</strong><p>{settings.address || "số nhà 81, Nam Lý, Trung Giã, Hà Nội"}</p><p>{settings.openHours || "09:00 — 20:30 · Thứ 2 — Chủ nhật"}</p></div>
+        <div><strong>Liên hệ</strong><a href={`tel:${settings.phone || "0383088262"}`}>{settings.phone || "0383088262"}</a><a href={`mailto:${settings.email || "hello@quynhnail.vn"}`}>{settings.email || "hello@quynhnail.vn"}</a></div>
         <div>
           <strong>Theo dõi</strong>
           <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer">Instagram</a>
