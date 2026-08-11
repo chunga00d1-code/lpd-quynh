@@ -1058,11 +1058,11 @@ export default function Home() {
           <p>Vẻ đẹp nằm trong từng chi tiết.</p>
         </div>
         <div><strong>Ghé Quỳnh</strong><p>số nhà 81, Nam Lý, Trung Giã, Hà Nội</p><p>08:00 — 20:00 · Thứ 2 — Chủ nhật</p></div>
-        <div><strong>Liên hệ</strong><a href="tel:0383088262">0383088262</a><a href="mailto:hello@quynhnail.vn">hello@quynhnail.vn</a></div>
+        <div><strong>Liên hệ</strong><a href="tel:0383088262">0383088262</a></div>
         <div>
           <strong>Theo dõi</strong>
-          <a href="https://www.facebook.com/nguyen.quynh.597831" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><FacebookIcon />Facebook</a>
-          <a href="https://www.tiktok.com/@2uyn21" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center" }}><TikTokIcon />TikTok</a>
+          <a href="https://www.facebook.com/nguyen.quynh.597831" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", marginTop: "8px" }}><FacebookIcon />Facebook</a>
+          <a href="https://www.tiktok.com/@2uyn21" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", marginTop: "8px" }}><TikTokIcon />TikTok</a>
         </div>
         <p className="copyright">© 2026 Quỳnh Nail ART. All rights reserved.</p>
       </footer>
