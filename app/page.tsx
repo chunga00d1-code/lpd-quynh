@@ -153,6 +153,7 @@ const DEFAULT_SETTINGS: Settings = {
 
 export default function Home() {
   // DB loaded states
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [services, setServices] = useState<Service[]>(DEFAULT_SERVICES);
   const [looks, setLooks] = useState<Look[]>(DEFAULT_LOOKS);
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -789,40 +790,39 @@ export default function Home() {
           <img src={settings.logoUrl || "/logo.png"} alt="Quỳnh Nail ART Logo" style={{ height: "40px", width: "auto", borderRadius: "50%" }} />
           <span><span>Quỳnh</span> Nail ART</span>
         </a>
-        <nav aria-label="Điều hướng chính">
-          <a href="#home" className={activeSection === "home" ? "active" : ""} aria-current={activeSection === "home" ? "true" : undefined}>Trang chủ</a>
-          <a href="#services" className={activeSection === "services" ? "active" : ""} aria-current={activeSection === "services" ? "true" : undefined}>Dịch vụ</a>
-          <a href="#gallery" className={activeSection === "gallery" ? "active" : ""} aria-current={activeSection === "gallery" ? "true" : undefined}>Bộ sưu tập</a>
-          <a href="#about" className={activeSection === "about" ? "active" : ""} aria-current={activeSection === "about" ? "true" : undefined}>Về Quỳnh</a>
-          <a href="#contact" className={activeSection === "contact" ? "active" : ""} aria-current={activeSection === "contact" ? "true" : undefined}>Liên hệ</a>
+        <nav aria-label="Điều hướng chính" className={mobileNavOpen ? "mobile-open" : ""}>
+          <a href="#home" className={activeSection === "home" ? "active" : ""} aria-current={activeSection === "home" ? "true" : undefined} onClick={() => setMobileNavOpen(false)}>Trang chủ</a>
+          <a href="#services" className={activeSection === "services" ? "active" : ""} aria-current={activeSection === "services" ? "true" : undefined} onClick={() => setMobileNavOpen(false)}>Dịch vụ</a>
+          <a href="#gallery" className={activeSection === "gallery" ? "active" : ""} aria-current={activeSection === "gallery" ? "true" : undefined} onClick={() => setMobileNavOpen(false)}>Bộ sưu tập</a>
+          <a href="#about" className={activeSection === "about" ? "active" : ""} aria-current={activeSection === "about" ? "true" : undefined} onClick={() => setMobileNavOpen(false)}>Về Quỳnh</a>
+          <a href="#contact" className={activeSection === "contact" ? "active" : ""} aria-current={activeSection === "contact" ? "true" : undefined} onClick={() => setMobileNavOpen(false)}>Liên hệ</a>
+          <a className="mobile-nav-book" href="#booking" onClick={() => setMobileNavOpen(false)}><span aria-hidden="true">◫</span> Đặt lịch ngay</a>
         </nav>
         <a className="header-book" href="#booking"><span aria-hidden="true">◫</span> Đặt lịch ngay</a>
+        <button
+          type="button"
+          className={`nav-toggle ${mobileNavOpen ? "active" : ""}`}
+          aria-label={mobileNavOpen ? "Đóng menu" : "Mở menu"}
+          aria-expanded={mobileNavOpen}
+          onClick={() => setMobileNavOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </header>
 
       <section className="hero" id="home">
         <div className="hero-copy">
-          <p className="eyebrow">{settings.salonName || "Quỳnh Nail ART"} · Since 2022</p>
+          <p className="eyebrow">Quỳnh Nail ART · Since 2022</p>
           <h1 className="word-mask-anim">
-            {settings.heroTitle ? (
-              settings.heroTitle.split(" ").map((w: string, i: number) => (
-                <span className="word-mask" key={i}>
-                  <span className="word-inner" style={{ animationDelay: `${0.15 + i * 0.06}s` }}>
-                    {w}&nbsp;
-                  </span>
-                  {(i === 1 || i === 3) && <br />}
-                </span>
-              ))
-            ) : (
-              <>
-                <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.15s" }}>Nâng niu</span></span>
-                <br />
-                <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.21s" }}>từng đầu</span></span>
-                <br />
-                <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.27s" }}>ngón tay</span></span>
-              </>
-            )}
+            <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.15s" }}>Nâng niu</span></span>
+            <br />
+            <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.21s" }}>từng đầu</span></span>
+            <br />
+            <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.27s" }}>ngón tay</span></span>
           </h1>
-          <p className="hero-text">{settings.heroText || "Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại."}</p>
+          <p className="hero-text">Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.</p>
           <div className="hero-actions">
             <a className="button button-primary" href="#booking">Đặt lịch ngay <Arrow /></a>
             <a className="text-link" href="#services">Xem dịch vụ <Arrow /></a>
@@ -1163,6 +1163,7 @@ export default function Home() {
               <div className="admin-modal-body" style={{ paddingTop: 0 }}>
                 {activeAdminTab === "bookings" && (
                   <div>
+                    <div className="table-scroll">
                     <table className="admin-table">
                       <thead>
                         <tr>
@@ -1215,6 +1216,7 @@ export default function Home() {
                         )}
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 )}
 
@@ -1295,6 +1297,7 @@ export default function Home() {
                       </div>
                     </form>
 
+                    <div className="table-scroll">
                     <table className="admin-table">
                       <thead>
                         <tr>
@@ -1328,6 +1331,7 @@ export default function Home() {
                         ))}
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 )}
 
@@ -1389,6 +1393,7 @@ export default function Home() {
                       <button className="admin-btn admin-btn-primary" type="submit">Lưu Look</button>
                     </form>
 
+                    <div className="table-scroll">
                     <table className="admin-table">
                       <thead>
                         <tr>
@@ -1417,6 +1422,7 @@ export default function Home() {
                         ))}
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 )}
 
