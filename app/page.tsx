@@ -821,12 +821,8 @@ export default function Home() {
       <section className="hero" id="home">
         <div className="hero-copy">
           <p className="eyebrow">Quỳnh Nail ART · Since 2022</p>
-          <h1 className="word-mask-anim">
-            <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.15s" }}>Nâng niu</span></span>
-            <br />
-            <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.21s" }}>từng đầu</span></span>
-            <br />
-            <span className="word-mask"><span className="word-inner" style={{ animationDelay: "0.27s" }}>ngón tay</span></span>
+          <h1>
+            Nâng niu<br />từng đầu<br />ngón tay
           </h1>
           <p className="hero-text">Tôn lên nét riêng của bạn với những bộ nail được chăm chút tỉ mỉ trong không gian thư thái, hiện đại.</p>
           <div className="hero-actions">
