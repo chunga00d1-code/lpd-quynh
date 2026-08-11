@@ -840,7 +840,7 @@ export default function Home() {
             <img src={settings.heroImageUrl || "/hero-burgundy-nails.png"} alt="Mẫu nail đỏ burgundy tại Quỳnh Nail ART" />
           </div>
           <div className="ba-before" style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}>
-            <div className="ba-before-fill" />
+            <img src="/hero-natural-nails.png" alt="Móng tay trước khi làm tại Quỳnh Nail ART" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
           </div>
           <span className="ba-tag ba-tag-before" style={{ opacity: sliderPos > 12 ? 1 : 0 }}>Trước</span>
           <span className="ba-tag ba-tag-after" style={{ opacity: sliderPos < 88 ? 1 : 0 }}>Sau</span>
