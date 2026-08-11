@@ -1,7 +1,13 @@
 import { getRuntimeEnv } from "../../../lib/runtime-env";
+import { checkAdminAuthFromRequest } from "../../../server/controller/admin.controller";
 
 export async function POST(request: Request) {
   try {
+    const isAdmin = await checkAdminAuthFromRequest(request);
+    if (!isAdmin) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const cloudName = await getRuntimeEnv("CLOUDINARY_CLOUD_NAME");
     const apiKey = await getRuntimeEnv("CLOUDINARY_API_KEY");
     const apiSecret = await getRuntimeEnv("CLOUDINARY_API_SECRET");
