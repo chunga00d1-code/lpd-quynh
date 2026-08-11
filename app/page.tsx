@@ -130,9 +130,9 @@ const DEFAULT_SERVICES: Service[] = [
 ];
 
 const DEFAULT_LOOKS: Look[] = [
-  { _id: "1", className: "look-burgundy", title: "Burgundy Pearl", tag: "Sang trọng", imageUrl: "" },
-  { _id: "2", className: "look-milk", title: "Milky Chrome", tag: "Tinh tế", imageUrl: "" },
-  { _id: "3", className: "look-french", title: "Modern French", tag: "Tối giản", imageUrl: "" },
+  { _id: "1", className: "look-burgundy", title: "Burgundy Pearl", tag: "Sang trọng", imageUrl: "/look-burgundy.png" },
+  { _id: "2", className: "look-milk", title: "Milky Chrome", tag: "Tinh tế", imageUrl: "/look-milk.png" },
+  { _id: "3", className: "look-french", title: "Modern French", tag: "Tối giản", imageUrl: "/look-french.png" },
 ];
 
 const DEFAULT_SETTINGS: Settings = {
