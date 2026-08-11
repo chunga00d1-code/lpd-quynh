@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { env } from "cloudflare:workers";
+import { getRuntimeEnv } from "../lib/runtime-env";
 
 let isConnected = false;
 let isDbAvailable = true;
@@ -9,11 +9,10 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     return mongoose;
   }
 
-  const cloudflareEnv = env as Record<string, string | undefined>;
-  const baseUri = cloudflareEnv.MONGODB_URI || process.env.MONGODB_URI || "mongodb://localhost:27017/luna_nail_studio";
-  const user = cloudflareEnv.MONGODB_USER || process.env.MONGODB_USER || "";
-  const password = cloudflareEnv.MONGODB_PASSWORD || process.env.MONGODB_PASSWORD || "";
-  const authSource = cloudflareEnv.MONGODB_AUTH_SOURCE || process.env.MONGODB_AUTH_SOURCE || "admin";
+  const baseUri = (await getRuntimeEnv("MONGODB_URI")) || "mongodb://localhost:27017/luna_nail_studio";
+  const user = (await getRuntimeEnv("MONGODB_USER")) || "";
+  const password = (await getRuntimeEnv("MONGODB_PASSWORD")) || "";
+  const authSource = (await getRuntimeEnv("MONGODB_AUTH_SOURCE")) || "admin";
 
   let finalUri = baseUri;
   if (user && password) {

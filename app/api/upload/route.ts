@@ -1,12 +1,11 @@
-import { env } from "cloudflare:workers";
+import { getRuntimeEnv } from "../../../lib/runtime-env";
 
 export async function POST(request: Request) {
   try {
-    const cloudflareEnv = env as Record<string, string | undefined>;
-    const cloudName = cloudflareEnv.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = cloudflareEnv.CLOUDINARY_API_KEY || process.env.CLOUDINARY_API_KEY;
-    const apiSecret = cloudflareEnv.CLOUDINARY_API_SECRET || process.env.CLOUDINARY_API_SECRET;
-    const uploadPreset = cloudflareEnv.CLOUDINARY_UPLOAD_PRESET || process.env.CLOUDINARY_UPLOAD_PRESET;
+    const cloudName = await getRuntimeEnv("CLOUDINARY_CLOUD_NAME");
+    const apiKey = await getRuntimeEnv("CLOUDINARY_API_KEY");
+    const apiSecret = await getRuntimeEnv("CLOUDINARY_API_SECRET");
+    const uploadPreset = await getRuntimeEnv("CLOUDINARY_UPLOAD_PRESET");
 
     if (!cloudName) {
       return Response.json(

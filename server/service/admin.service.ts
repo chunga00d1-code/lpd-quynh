@@ -1,6 +1,6 @@
 import { connectToDatabase } from "../../db/mongodb";
 import { AdminModel } from "../model/admin.model";
-import { env } from "cloudflare:workers";
+import { getRuntimeEnv } from "../../lib/runtime-env";
 
 async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -14,10 +14,9 @@ export class AdminService {
   static async seedAdmin() {
     try {
       await connectToDatabase();
-      
-      const cloudflareEnv = env as Record<string, string | undefined>;
-      const envUsername = cloudflareEnv.ADMIN_USERNAME || process.env.ADMIN_USERNAME || "admin";
-      const envPassword = cloudflareEnv.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "admin123";
+
+      const envUsername = (await getRuntimeEnv("ADMIN_USERNAME")) || "admin";
+      const envPassword = (await getRuntimeEnv("ADMIN_PASSWORD")) || "admin123";
       
       const count = await AdminModel.countDocuments({});
       if (count === 0) {
@@ -49,9 +48,8 @@ export class AdminService {
   }
 
   static async authenticate(username: string, password: string): Promise<boolean> {
-    const cloudflareEnv = env as Record<string, string | undefined>;
-    const envUsername = cloudflareEnv.ADMIN_USERNAME || process.env.ADMIN_USERNAME || "admin";
-    const envPassword = cloudflareEnv.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "admin123";
+    const envUsername = (await getRuntimeEnv("ADMIN_USERNAME")) || "admin";
+    const envPassword = (await getRuntimeEnv("ADMIN_PASSWORD")) || "admin123";
 
     try {
       await this.seedAdmin();
