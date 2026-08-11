@@ -23,9 +23,35 @@ export class SettingsService {
       let settings = await SettingsModel.findOne({});
       if (!settings) {
         settings = await SettingsModel.create({});
-      } else if (settings.salonName === "Luna Nail Studio") {
-        settings.salonName = "Quỳnh Nail ART";
-        await settings.save();
+      } else {
+        let changed = false;
+        if (settings.salonName === "Luna Nail Studio") {
+          settings.salonName = "Quỳnh Nail ART";
+          changed = true;
+        }
+        if (settings.address === "25 Nguyễn Trãi, Hà Nội") {
+          settings.address = "số nhà 81, Nam Lý, Trung Giã, Hà Nội";
+          changed = true;
+        }
+        if (settings.phone === "0901 234 567" || settings.phone === "0901234567") {
+          settings.phone = "0383088262";
+          changed = true;
+        }
+        if (settings.openHours === "09:00 — 20:30 · Thứ 2 — Chủ nhật") {
+          settings.openHours = "08:00 — 20:00 · Thứ 2 — Chủ nhật";
+          changed = true;
+        }
+        if (settings.facebookUrl === "#") {
+          settings.facebookUrl = "https://www.facebook.com/nguyen.quynh.597831";
+          changed = true;
+        }
+        if (settings.tiktokUrl === "#" || settings.tiktokUrl === "https://www.tiktok.com/@2uyn21") {
+          settings.tiktokUrl = "https://www.tiktok.com/@2uyn21";
+          changed = true;
+        }
+        if (changed) {
+          await settings.save();
+        }
       }
       return settings;
     } catch (e) {
